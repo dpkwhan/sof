@@ -12,6 +12,9 @@ $("#content").height(window.innerHeight-120);
 const myChart = echarts.init(document.getElementById('content'));
 window.onresize = () => myChart.resize();
 
+const volDistStr = `{"session":["Open Auction","Continuous","Close Auction"],"historical":[0.01305,0.72251,0.26444],"realized":[0.07162666,0.592729,0.3356444],"price":[90.71,89.76831,90.13]}`;
+const volDist = JSON.parse(volDistStr);
+
 const SofMenu = () => {
     const [visible, setVisible] = useState(false);
     const [openKeys, setOpenKeys] = useState(['sub1']);
@@ -70,12 +73,12 @@ const SofMenu = () => {
           }
         },
         legend: {
-          data: ['Evaporation', 'Precipitation', 'Average Temperature']
+          data: ['Historical', 'Realized', 'Avg. Price']
         },
         xAxis: [
           {
             type: 'category',
-            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            data: volDist.session,
             axisPointer: {
               type: 'shadow'
             }
@@ -84,41 +87,39 @@ const SofMenu = () => {
         yAxis: [
           {
             type: 'value',
-            name: 'Water',
+            name: 'Volume (%)',
             min: 0,
-            max: 250,
-            interval: 50,
+            max: 1,
+            // interval: 50,
             axisLabel: {
-              formatter: '{value} ml'
+              formatter: (value) => {
+                return numeral(value).format('0.%');
+              }
             }
           },
           {
             type: 'value',
-            name: 'Temperature',
-            min: 0,
-            max: 25,
-            interval: 5,
-            axisLabel: {
-              formatter: '{value} °C'
-            }
+            name: 'Price',
+            min: 'dataMin',
+            max: 'dataMax',
           }
         ],
         series: [
           {
-            name: 'Evaporation',
+            name: 'Historical',
             type: 'bar',
-            data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+            data: volDist.historical
           },
           {
-            name: 'Precipitation',
+            name: 'Realized',
             type: 'bar',
-            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+            data: volDist.realized
           },
           {
-            name: 'Average Temperature',
+            name: 'Avg. Price',
             type: 'line',
             yAxisIndex: 1,
-            data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+            data: volDist.price
           },
         ]
       };
