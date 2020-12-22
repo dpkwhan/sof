@@ -22,7 +22,6 @@ class ChartComponent extends React.Component {
       this.resizeContainer();
       this.createChart();
       window.onresize = () => {
-        console.log("Resizing...");
         this.resizeContainer();
         this.chart.resize();
       };

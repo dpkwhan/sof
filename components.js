@@ -43,7 +43,6 @@ var ChartComponent = function (_React$Component) {
       this.resizeContainer();
       this.createChart();
       window.onresize = function () {
-        console.log("Resizing...");
         _this2.resizeContainer();
         _this2.chart.resize();
       };

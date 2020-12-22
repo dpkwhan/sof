@@ -3,55 +3,109 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var useState = React.useState;
+
 var _antd = antd,
-    Menu = _antd.Menu;
+    Layout = _antd.Layout,
+    Menu = _antd.Menu,
+    Breadcrumb = _antd.Breadcrumb;
+var Header = Layout.Header,
+    Content = Layout.Content,
+    Footer = Layout.Footer,
+    Sider = Layout.Sider;
 var SubMenu = Menu.SubMenu;
 var _icons = icons,
     MenuOutlined = _icons.MenuOutlined,
     AppstoreOutlined = _icons.AppstoreOutlined,
     BarChartOutlined = _icons.BarChartOutlined,
-    AreaChartOutlined = _icons.AreaChartOutlined;
+    AreaChartOutlined = _icons.AreaChartOutlined,
+    PieChartOutlined = _icons.PieChartOutlined,
+    DesktopOutlined = _icons.DesktopOutlined,
+    UserOutlined = _icons.UserOutlined,
+    TeamOutlined = _icons.TeamOutlined,
+    FileOutlined = _icons.FileOutlined;
 
 
-var rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
+var rootSubmenuKeys = ['sub1', 'sub2'];
 
-var handleOpenAndCloseClick = function handleOpenAndCloseClick() {
-  var contentContainer = document.querySelector('#content');
-  ReactDOM.render(React.createElement(OpenContClosePct, null), contentContainer);
+var Todo1 = React.createElement(
+  'div',
+  null,
+  'Todo 1'
+);
+var Todo2 = React.createElement(
+  'div',
+  null,
+  'Todo 2'
+);
+var Todo3 = React.createElement(
+  'div',
+  null,
+  'Todo 3'
+);
+var Todo4 = React.createElement(
+  'div',
+  null,
+  'Todo 4'
+);
+
+var menu = {
+  MarketVolume: {
+    MarketShare: { title: "Market Share", component: React.createElement(OpenContClosePct, null) },
+    NYSETapeC: { title: "NYSE Tape C", component: Todo2 },
+    NYSENational: { title: "NYSE National", component: Todo3 },
+    MarketVolume: { title: "Market Volume", component: Todo4 },
+    OddLot: { title: "Odd-Lot Volume", component: Todo1 }
+  },
+  DarkLiquidity: {
+    ATSVolume: { title: "ATS Volume", component: Todo2 },
+    NonATSVolume: { title: "Non-ATS Volume", component: Todo3 },
+    BlockVolume: { title: "Block Volume", component: Todo4 }
+  }
 };
 
-var handleOrderInfoClick = function handleOrderInfoClick() {
-  var contentContainer = document.querySelector('#content');
-  ReactDOM.render(React.createElement(OpenContClosePct, null), contentContainer);
-  // ReactDOM.render(<Homepage />, contentContainer);
-};
+var i = 1;
+Object.entries(menu).forEach(function (_ref) {
+  var _ref2 = _slicedToArray(_ref, 2),
+      name = _ref2[0],
+      submenu = _ref2[1];
 
-var handleOption1Click = function handleOption1Click() {
-  var contentContainer = document.querySelector('#content');
-  ReactDOM.render(React.createElement(ChartComponent, null), contentContainer);
-};
+  Object.entries(submenu).forEach(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 2),
+        name = _ref4[0],
+        item = _ref4[1];
+
+    item.key = "" + i;
+    i++;
+  });
+});
 
 var SofMenu = function SofMenu() {
   var _useState = useState(false),
       _useState2 = _slicedToArray(_useState, 2),
-      visible = _useState2[0],
-      setVisible = _useState2[1];
+      collapsed = _useState2[0],
+      setCollapsed = _useState2[1];
 
   var _useState3 = useState(['sub1']),
       _useState4 = _slicedToArray(_useState3, 2),
       openKeys = _useState4[0],
       setOpenKeys = _useState4[1];
 
-  React.useEffect(function () {
-    handleOrderInfoClick();
-  }, []);
+  var _useState5 = useState(Todo1),
+      _useState6 = _slicedToArray(_useState5, 2),
+      component = _useState6[0],
+      setComponent = _useState6[1];
 
-  var showDrawer = function showDrawer() {
-    setVisible(true);
-  };
+  var _useState7 = useState(window.innerHeight - 130),
+      _useState8 = _slicedToArray(_useState7, 2),
+      minHeight = _useState8[0],
+      setMinHeight = _useState8[1];
 
-  var _onClose = function _onClose() {
-    setVisible(false);
+  // React.useEffect(() => {
+  //   handleOrderInfoClick();
+  // }, []);
+
+  var onCollapse = function onCollapse(collapsed) {
+    setCollapsed(collapsed);
   };
 
   var onOpenChange = function onOpenChange(keys) {
@@ -65,131 +119,91 @@ var SofMenu = function SofMenu() {
     }
   };
 
-  var handleOptionBackup = function handleOptionBackup() {
-    var contentContainer = document.querySelector('#content');
-    ReactDOM.render(React.createElement(
-      'div',
-      null,
-      'Option 2'
-    ), contentContainer);
+  var handleMenuItemClick = function handleMenuItemClick(selectedStatName) {
+    Object.entries(menu).map(function (_ref5) {
+      var _ref6 = _slicedToArray(_ref5, 2),
+          name = _ref6[0],
+          submenu = _ref6[1];
+
+      return Object.entries(submenu).map(function (_ref7) {
+        var _ref8 = _slicedToArray(_ref7, 2),
+            subname = _ref8[0],
+            item = _ref8[1];
+
+        if (subname === selectedStatName) {
+          setComponent(item.component);
+        }
+      });
+    });
   };
 
+  window.onresize = function () {
+    console.log("Resizing...SofMenu");
+    setMinHeight(window.innerHeight - 130);
+  };
+
+  var mv = menu.MarketVolume;
+  var dl = menu.DarkLiquidity;
+
   return React.createElement(
-    'div',
-    null,
+    Layout,
+    { style: { minHeight: minHeight } },
     React.createElement(
-      antd.Affix,
-      { style: { position: 'absolute', top: 20, right: 20 } },
+      Content,
+      { style: { margin: '16px' } },
       React.createElement(
-        antd.Button,
-        { type: 'primary', onClick: function onClick() {
-            return showDrawer();
-          } },
-        React.createElement(MenuOutlined, null)
+        'div',
+        { style: { minHeight: minHeight, background: "white" } },
+        component
       )
     ),
     React.createElement(
-      antd.Drawer,
-      {
-        title: 'Table of Contents',
-        placement: 'right',
-        closable: false,
-        onClose: function onClose() {
-          return _onClose();
-        },
-        visible: visible,
-        key: 'right',
-        width: 280
-      },
+      Sider,
+      { collapsible: true, collapsed: collapsed, onCollapse: onCollapse, reverseArrow: true },
       React.createElement(
         Menu,
-        { mode: 'inline', openKeys: openKeys, onOpenChange: onOpenChange, style: { width: 256 } },
-        React.createElement(
-          Menu.Item,
-          { key: '0', onClick: function onClick() {
-              handleOrderInfoClick();setVisible(false);
-            } },
-          'Order Info'
-        ),
+        { theme: 'dark', defaultSelectedKeys: ['1'], mode: 'inline', openKeys: openKeys, onOpenChange: onOpenChange },
         React.createElement(
           SubMenu,
-          { key: 'sub1', icon: React.createElement(BarChartOutlined, null), title: 'Volume Stats' },
-          React.createElement(
-            Menu.Item,
-            { key: '1', onClick: function onClick() {
-                handleOption1Click();setVisible(false);
-              } },
-            'Option 1'
-          ),
-          React.createElement(
-            Menu.Item,
-            { key: '2', onClick: function onClick() {
-                handleOpenAndCloseClick();setVisible(false);
-              } },
-            'Open and Close'
-          ),
-          React.createElement(
-            Menu.Item,
-            { key: '3' },
-            'Continuous Profile'
-          ),
-          React.createElement(
-            Menu.Item,
-            { key: '4' },
-            'Option 4'
-          )
-        ),
-        React.createElement(
-          SubMenu,
-          { key: 'sub2', icon: React.createElement(AppstoreOutlined, null), title: 'Navigation Two' },
-          React.createElement(
-            Menu.Item,
-            { key: '5' },
-            'Option 5'
-          ),
-          React.createElement(
-            Menu.Item,
-            { key: '6' },
-            'Option 6'
-          ),
-          React.createElement(
-            SubMenu,
-            { key: 'sub3', title: 'Submenu' },
-            React.createElement(
+          { key: 'sub1', icon: React.createElement(UserOutlined, null), title: 'Volume Stats' },
+          Object.entries(mv).map(function (_ref9) {
+            var _ref10 = _slicedToArray(_ref9, 2),
+                name = _ref10[0],
+                item = _ref10[1];
+
+            return React.createElement(
               Menu.Item,
-              { key: '7' },
-              'Option 7'
-            ),
-            React.createElement(
-              Menu.Item,
-              { key: '8' },
-              'Option 8'
-            )
-          )
+              { key: item.key, onClick: function onClick() {
+                  return handleMenuItemClick(name);
+                } },
+              React.createElement(
+                'span',
+                null,
+                item.title
+              )
+            );
+          })
         ),
         React.createElement(
           SubMenu,
-          { key: 'sub4', icon: React.createElement(AreaChartOutlined, null), title: 'Navigation Three' },
-          React.createElement(
-            Menu.Item,
-            { key: '9' },
-            'Option 9'
-          ),
-          React.createElement(
-            Menu.Item,
-            { key: '10' },
-            'Option 10'
-          ),
-          React.createElement(
-            Menu.Item,
-            { key: '11' },
-            'Option 11'
-          ),
-          React.createElement(
-            Menu.Item,
-            { key: '12' },
-            'Option 12'
-          )
+          { key: 'sub2', icon: React.createElement(TeamOutlined, null), title: 'Team' },
+          Object.entries(dl).map(function (_ref11) {
+            var _ref12 = _slicedToArray(_ref11, 2),
+                name = _ref12[0],
+                item = _ref12[1];
+
+            return React.createElement(
+              Menu.Item,
+              { key: item.key, onClick: function onClick() {
+                  return handleMenuItemClick(name);
+                } },
+              React.createElement(
+                'span',
+                null,
+                item.title
+              )
+            );
+          })
         )
       )
     )
