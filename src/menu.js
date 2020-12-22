@@ -1,7 +1,5 @@
 'use strict';
 
-const useState = React.useState;
-
 const { Layout, Menu, Breadcrumb } = antd;
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -17,7 +15,7 @@ const Todo4 = <div>Todo 4</div>;
 
 const menu = {
   MarketVolume: {
-    MarketShare: { title: "Market Share", component: <OpenContClosePct /> },
+    MarketShare: { title: "Market Share", component: <OpenContCloseVolDist /> },
     NYSETapeC: { title: "NYSE Tape C", component: Todo2 },
     NYSENational: { title: "NYSE National", component: Todo3 },
     MarketVolume: { title: "Market Volume", component: Todo4 },
@@ -42,11 +40,8 @@ const SofMenu = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [openKeys, setOpenKeys] = useState(['sub1']);
     const [component, setComponent] = useState(Todo1);
-    const [minHeight, setMinHeight] = useState(window.innerHeight - 130);
-
-    // React.useEffect(() => {
-    //   handleOrderInfoClick();
-    // }, []);
+    const minHeight = useRecoilValue(heightState);
+    const setMinHeight = useSetRecoilState(heightState);
 
     const onCollapse = collapsed => {
       setCollapsed(collapsed);
@@ -72,8 +67,7 @@ const SofMenu = () => {
     }
 
     window.onresize = () => {
-      console.log("Resizing...SofMenu");
-      setMinHeight(window.innerHeight - 130);
+      setMinHeight(window.innerHeight - globalHeightOffset);
     };
 
     const mv = menu.MarketVolume;
@@ -81,8 +75,8 @@ const SofMenu = () => {
 
     return (
       <Layout style={{ minHeight }}>
-        <Content style={{ margin: '16px' }}>
-          <div style={{ minHeight, background: "white" }}>
+        <Content style={{ margin: 16 }}>
+          <div style={{ minHeight, background: "white", paddingTop: globalChartOffset}}>
             {component}
           </div>
         </Content>
@@ -109,4 +103,4 @@ const SofMenu = () => {
 };
 
 const domContainer = document.querySelector('#sof_menu');
-ReactDOM.render(<SofMenu />, domContainer);
+ReactDOM.render(<RecoilRoot><SofMenu /></RecoilRoot>, domContainer);

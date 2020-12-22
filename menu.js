@@ -2,8 +2,6 @@
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var useState = React.useState;
-
 var _antd = antd,
     Layout = _antd.Layout,
     Menu = _antd.Menu,
@@ -50,7 +48,7 @@ var Todo4 = React.createElement(
 
 var menu = {
   MarketVolume: {
-    MarketShare: { title: "Market Share", component: React.createElement(OpenContClosePct, null) },
+    MarketShare: { title: "Market Share", component: React.createElement(OpenContCloseVolDist, null) },
     NYSETapeC: { title: "NYSE Tape C", component: Todo2 },
     NYSENational: { title: "NYSE National", component: Todo3 },
     MarketVolume: { title: "Market Volume", component: Todo4 },
@@ -95,14 +93,8 @@ var SofMenu = function SofMenu() {
       component = _useState6[0],
       setComponent = _useState6[1];
 
-  var _useState7 = useState(window.innerHeight - 130),
-      _useState8 = _slicedToArray(_useState7, 2),
-      minHeight = _useState8[0],
-      setMinHeight = _useState8[1];
-
-  // React.useEffect(() => {
-  //   handleOrderInfoClick();
-  // }, []);
+  var minHeight = useRecoilValue(heightState);
+  var setMinHeight = useSetRecoilState(heightState);
 
   var onCollapse = function onCollapse(collapsed) {
     setCollapsed(collapsed);
@@ -138,8 +130,7 @@ var SofMenu = function SofMenu() {
   };
 
   window.onresize = function () {
-    console.log("Resizing...SofMenu");
-    setMinHeight(window.innerHeight - 130);
+    setMinHeight(window.innerHeight - globalHeightOffset);
   };
 
   var mv = menu.MarketVolume;
@@ -150,10 +141,10 @@ var SofMenu = function SofMenu() {
     { style: { minHeight: minHeight } },
     React.createElement(
       Content,
-      { style: { margin: '16px' } },
+      { style: { margin: 16 } },
       React.createElement(
         'div',
-        { style: { minHeight: minHeight, background: "white" } },
+        { style: { minHeight: minHeight, background: "white", paddingTop: globalChartOffset } },
         component
       )
     ),
@@ -211,4 +202,8 @@ var SofMenu = function SofMenu() {
 };
 
 var domContainer = document.querySelector('#sof_menu');
-ReactDOM.render(React.createElement(SofMenu, null), domContainer);
+ReactDOM.render(React.createElement(
+  RecoilRoot,
+  null,
+  React.createElement(SofMenu, null)
+), domContainer);
