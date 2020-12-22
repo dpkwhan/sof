@@ -4,7 +4,7 @@ const useState = React.useState;
 const { Menu } = antd;
 const { SubMenu } = Menu;
 
-const { MenuOutlined, AppstoreOutlined, MailOutlined, SettingOutlined } = icons;
+const { MenuOutlined, AppstoreOutlined, BarChartOutlined, AreaChartOutlined } = icons;
 
 const rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
 
@@ -14,13 +14,12 @@ const handleOpenAndCloseClick = () => {
 };
 
 const handleOrderInfoClick = () => {
-  console.log("Default page");
   const contentContainer = document.querySelector('#content');
-  ReactDOM.render(<div>Order Information:</div>, contentContainer);
+  ReactDOM.render(<OpenContClosePct />, contentContainer);
+  // ReactDOM.render(<Homepage />, contentContainer);
 };
 
 const handleOption1Click = () => {
-  console.log("Option 1 was clicked...");
   const contentContainer = document.querySelector('#content');
   ReactDOM.render(<ChartComponent />, contentContainer);
 };
@@ -28,6 +27,10 @@ const handleOption1Click = () => {
 const SofMenu = () => {
     const [visible, setVisible] = useState(false);
     const [openKeys, setOpenKeys] = useState(['sub1']);
+
+    React.useEffect(() => {
+      handleOrderInfoClick();
+    }, []);
 
     const showDrawer = () => {
       setVisible(true);
@@ -47,13 +50,9 @@ const SofMenu = () => {
     };
 
     const handleOptionBackup= () => {
-      console.log("Option 2 is clicked!!!");
       const contentContainer = document.querySelector('#content');
       ReactDOM.render(<div>Option 2</div>, contentContainer);
     };
-
-    // Execute this only once
-    // handleOrderInfoClick();
 
     return (
       <div>
@@ -74,10 +73,10 @@ const SofMenu = () => {
         >
           <Menu mode="inline" openKeys={openKeys} onOpenChange={onOpenChange} style={{ width: 256 }}>
             <Menu.Item key="0" onClick={() => {handleOrderInfoClick(); setVisible(false)}}>Order Info</Menu.Item>
-            <SubMenu key="sub1" icon={<MailOutlined />} title="Volume Stats">
+            <SubMenu key="sub1" icon={<BarChartOutlined />} title="Volume Stats">
               <Menu.Item key="1" onClick={() => {handleOption1Click(); setVisible(false)}}>Option 1</Menu.Item>
               <Menu.Item key="2" onClick={() => {handleOpenAndCloseClick(); setVisible(false)}}>Open and Close</Menu.Item>
-              <Menu.Item key="3">Option 3</Menu.Item>
+              <Menu.Item key="3">Continuous Profile</Menu.Item>
               <Menu.Item key="4">Option 4</Menu.Item>
             </SubMenu>
             <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Navigation Two">
@@ -88,7 +87,7 @@ const SofMenu = () => {
                 <Menu.Item key="8">Option 8</Menu.Item>
               </SubMenu>
             </SubMenu>
-            <SubMenu key="sub4" icon={<SettingOutlined />} title="Navigation Three">
+            <SubMenu key="sub4" icon={<AreaChartOutlined />} title="Navigation Three">
               <Menu.Item key="9">Option 9</Menu.Item>
               <Menu.Item key="10">Option 10</Menu.Item>
               <Menu.Item key="11">Option 11</Menu.Item>

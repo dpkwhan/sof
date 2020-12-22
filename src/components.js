@@ -1,6 +1,7 @@
 class ChartComponent extends React.Component {
     constructor(props, context) {
       super(props, context);
+      this.state = {height: window.innerHeight - 150};
     }
   
     createChart() {
@@ -10,29 +11,19 @@ class ChartComponent extends React.Component {
     }
   
     makeChartOptions() {
-      return {
-        title: {
-          text: 'ECharts entry example'
-        },
-        tooltip: {},
-        legend: {
-          data: ['Sales']
-        },
-        xAxis: {
-          data: ["shirt","cardign","chiffon shirt","pants","heels","socks"]
-        },
-        yAxis: {},
-        series: [{
-          name: 'Sales',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        }]
-      };
+      throw Error("Please implement this function");
+    }
+
+    resizeContainer() {
+      this.setState({height: window.innerHeight - 120});
     }
   
     componentDidMount() {
+      this.resizeContainer();
       this.createChart();
       window.onresize = () => {
+        console.log("Resizing...");
+        this.resizeContainer();
         this.chart.resize();
       };
     }
@@ -42,8 +33,7 @@ class ChartComponent extends React.Component {
     }
   
     render() {
-      const height = window.innerHeight - 120;
-      return <div style={{ height, width: "100%" }} />;
+      return <div style={{ height: this.state.height, width: "100%" }} />;
     }
 }
 
@@ -55,18 +45,46 @@ class OpenContClosePct extends ChartComponent {
     }
 
     makeChartOptions() {
+        const style = "display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px";
+        const colorSpan = color => `<span style="${style};background-color:${color}"></span>`;
+
         return {
+            title: {
+              text: "Volume Distribution and Average Price",
+              left: 'center',
+              padding: [0, 5],
+            },
             tooltip: {
-              trigger: 'axis',
+              show: false,
+              trigger: "axis",
               axisPointer: {
+                animation: true,
                 type: 'cross',
                 crossStyle: {
                   color: '#999'
                 }
+              },
+              formatter: function(params) {
+                let rez = `<p style="text-align:left"><b>${params[0].axisValue}</b></p>`;
+                rez += "<table>";
+                params.forEach(item => {
+                  const colorEle = colorSpan(item.color);
+                  let fmt = "0.0%";
+                  if (item.seriesName === "Avg. Price") {
+                    fmt = item.data < 1 ? "0.0000": "0.00";
+                  }
+                  const pct = numeral(item.data).format(fmt);
+                  const xx = `<tr><td style="text-align:left">${colorEle} ${item.seriesName}</td><td style="text-align:right;padding-left:5px">${pct}</td></tr>`;
+                  rez += xx;
+                });
+                rez += "</table>";
+                return rez;
               }
             },
             legend: {
-              data: ['Historical', 'Realized', 'Avg. Price']
+              data: ['Historical', 'Realized', 'Avg. Price'],
+              bottom: 0,
+              left: "center",
             },
             xAxis: [
               {
@@ -135,4 +153,10 @@ class OpenContClosePct extends ChartComponent {
             ]
         };
     }
+}
+
+const Homepage = () => {
+  return (
+    <div>This is the homepage</div>
+  );
 }

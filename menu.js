@@ -9,8 +9,8 @@ var SubMenu = Menu.SubMenu;
 var _icons = icons,
     MenuOutlined = _icons.MenuOutlined,
     AppstoreOutlined = _icons.AppstoreOutlined,
-    MailOutlined = _icons.MailOutlined,
-    SettingOutlined = _icons.SettingOutlined;
+    BarChartOutlined = _icons.BarChartOutlined,
+    AreaChartOutlined = _icons.AreaChartOutlined;
 
 
 var rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
@@ -21,17 +21,12 @@ var handleOpenAndCloseClick = function handleOpenAndCloseClick() {
 };
 
 var handleOrderInfoClick = function handleOrderInfoClick() {
-  console.log("Default page");
   var contentContainer = document.querySelector('#content');
-  ReactDOM.render(React.createElement(
-    'div',
-    null,
-    'Order Information:'
-  ), contentContainer);
+  ReactDOM.render(React.createElement(OpenContClosePct, null), contentContainer);
+  // ReactDOM.render(<Homepage />, contentContainer);
 };
 
 var handleOption1Click = function handleOption1Click() {
-  console.log("Option 1 was clicked...");
   var contentContainer = document.querySelector('#content');
   ReactDOM.render(React.createElement(ChartComponent, null), contentContainer);
 };
@@ -46,6 +41,10 @@ var SofMenu = function SofMenu() {
       _useState4 = _slicedToArray(_useState3, 2),
       openKeys = _useState4[0],
       setOpenKeys = _useState4[1];
+
+  React.useEffect(function () {
+    handleOrderInfoClick();
+  }, []);
 
   var showDrawer = function showDrawer() {
     setVisible(true);
@@ -67,7 +66,6 @@ var SofMenu = function SofMenu() {
   };
 
   var handleOptionBackup = function handleOptionBackup() {
-    console.log("Option 2 is clicked!!!");
     var contentContainer = document.querySelector('#content');
     ReactDOM.render(React.createElement(
       'div',
@@ -75,9 +73,6 @@ var SofMenu = function SofMenu() {
       'Option 2'
     ), contentContainer);
   };
-
-  // Execute this only once
-  // handleOrderInfoClick();
 
   return React.createElement(
     'div',
@@ -118,7 +113,7 @@ var SofMenu = function SofMenu() {
         ),
         React.createElement(
           SubMenu,
-          { key: 'sub1', icon: React.createElement(MailOutlined, null), title: 'Volume Stats' },
+          { key: 'sub1', icon: React.createElement(BarChartOutlined, null), title: 'Volume Stats' },
           React.createElement(
             Menu.Item,
             { key: '1', onClick: function onClick() {
@@ -136,7 +131,7 @@ var SofMenu = function SofMenu() {
           React.createElement(
             Menu.Item,
             { key: '3' },
-            'Option 3'
+            'Continuous Profile'
           ),
           React.createElement(
             Menu.Item,
@@ -174,7 +169,7 @@ var SofMenu = function SofMenu() {
         ),
         React.createElement(
           SubMenu,
-          { key: 'sub4', icon: React.createElement(SettingOutlined, null), title: 'Navigation Three' },
+          { key: 'sub4', icon: React.createElement(AreaChartOutlined, null), title: 'Navigation Three' },
           React.createElement(
             Menu.Item,
             { key: '9' },

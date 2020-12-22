@@ -12,58 +12,51 @@ var ChartComponent = function (_React$Component) {
   function ChartComponent(props, context) {
     _classCallCheck(this, ChartComponent);
 
-    return _possibleConstructorReturn(this, (ChartComponent.__proto__ || Object.getPrototypeOf(ChartComponent)).call(this, props, context));
+    var _this = _possibleConstructorReturn(this, (ChartComponent.__proto__ || Object.getPrototypeOf(ChartComponent)).call(this, props, context));
+
+    _this.state = { height: window.innerHeight - 150 };
+    return _this;
   }
 
   _createClass(ChartComponent, [{
-    key: 'createChart',
+    key: "createChart",
     value: function createChart() {
       this.chart = echarts.init(ReactDOM.findDOMNode(this));
       var options = this.makeChartOptions();
       this.chart.setOption(options);
     }
   }, {
-    key: 'makeChartOptions',
+    key: "makeChartOptions",
     value: function makeChartOptions() {
-      return {
-        title: {
-          text: 'ECharts entry example'
-        },
-        tooltip: {},
-        legend: {
-          data: ['Sales']
-        },
-        xAxis: {
-          data: ["shirt", "cardign", "chiffon shirt", "pants", "heels", "socks"]
-        },
-        yAxis: {},
-        series: [{
-          name: 'Sales',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        }]
-      };
+      throw Error("Please implement this function");
     }
   }, {
-    key: 'componentDidMount',
+    key: "resizeContainer",
+    value: function resizeContainer() {
+      this.setState({ height: window.innerHeight - 120 });
+    }
+  }, {
+    key: "componentDidMount",
     value: function componentDidMount() {
       var _this2 = this;
 
+      this.resizeContainer();
       this.createChart();
       window.onresize = function () {
+        console.log("Resizing...");
+        _this2.resizeContainer();
         _this2.chart.resize();
       };
     }
   }, {
-    key: 'componentWillUnmount',
+    key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.chart.dispose();
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
-      var height = window.innerHeight - 120;
-      return React.createElement('div', { style: { height: height, width: "100%" } });
+      return React.createElement("div", { style: { height: this.state.height, width: "100%" } });
     }
   }]);
 
@@ -78,26 +71,56 @@ var OpenContClosePct = function (_ChartComponent) {
 
     var _this3 = _possibleConstructorReturn(this, (OpenContClosePct.__proto__ || Object.getPrototypeOf(OpenContClosePct)).call(this, props, context));
 
-    _this3.volDistStr = '{"session":["Open Auction","Continuous","Close Auction"],"historical":[0.01305,0.72251,0.26444],"realized":[0.07162666,0.592729,0.3356444],"price":[90.71,89.76831,90.13]}';
+    _this3.volDistStr = "{\"session\":[\"Open Auction\",\"Continuous\",\"Close Auction\"],\"historical\":[0.01305,0.72251,0.26444],\"realized\":[0.07162666,0.592729,0.3356444],\"price\":[90.71,89.76831,90.13]}";
     _this3.volDist = JSON.parse(_this3.volDistStr);
     return _this3;
   }
 
   _createClass(OpenContClosePct, [{
-    key: 'makeChartOptions',
+    key: "makeChartOptions",
     value: function makeChartOptions() {
+      var style = "display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px";
+      var colorSpan = function colorSpan(color) {
+        return "<span style=\"" + style + ";background-color:" + color + "\"></span>";
+      };
+
       return {
+        title: {
+          text: "Volume Distribution and Average Price",
+          left: 'center',
+          padding: [0, 5]
+        },
         tooltip: {
-          trigger: 'axis',
+          show: false,
+          trigger: "axis",
           axisPointer: {
+            animation: true,
             type: 'cross',
             crossStyle: {
               color: '#999'
             }
+          },
+          formatter: function formatter(params) {
+            var rez = "<p style=\"text-align:left\"><b>" + params[0].axisValue + "</b></p>";
+            rez += "<table>";
+            params.forEach(function (item) {
+              var colorEle = colorSpan(item.color);
+              var fmt = "0.0%";
+              if (item.seriesName === "Avg. Price") {
+                fmt = item.data < 1 ? "0.0000" : "0.00";
+              }
+              var pct = numeral(item.data).format(fmt);
+              var xx = "<tr><td style=\"text-align:left\">" + colorEle + " " + item.seriesName + "</td><td style=\"text-align:right;padding-left:5px\">" + pct + "</td></tr>";
+              rez += xx;
+            });
+            rez += "</table>";
+            return rez;
           }
         },
         legend: {
-          data: ['Historical', 'Realized', 'Avg. Price']
+          data: ['Historical', 'Realized', 'Avg. Price'],
+          bottom: 0,
+          left: "center"
         },
         xAxis: [{
           type: 'category',
@@ -161,3 +184,11 @@ var OpenContClosePct = function (_ChartComponent) {
 
   return OpenContClosePct;
 }(ChartComponent);
+
+var Homepage = function Homepage() {
+  return React.createElement(
+    "div",
+    null,
+    "This is the homepage"
+  );
+};
