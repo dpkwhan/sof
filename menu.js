@@ -48,8 +48,8 @@ var Todo4 = React.createElement(
 
 var menu = {
   MarketVolume: {
-    MarketShare: { title: "Open and Close", component: React.createElement(OpenContCloseVolDist, null) },
-    NYSETapeC: { title: "NYSE Tape C", component: Todo2 },
+    OpenAndClose: { title: "Open and Close", component: React.createElement(OpenContCloseVolDist, null) },
+    ContProfile: { title: "Continous Profile", component: React.createElement(ContinuousVolProfile, null) },
     NYSENational: { title: "NYSE National", component: Todo3 },
     MarketVolume: { title: "Market Volume", component: Todo4 },
     OddLot: { title: "Odd-Lot Volume", component: Todo1 }
@@ -77,6 +77,26 @@ Object.entries(menu).forEach(function (_ref) {
   });
 });
 
+var getComponent = function getComponent(nameSelected) {
+  var component = null;
+  Object.entries(menu).map(function (_ref5) {
+    var _ref6 = _slicedToArray(_ref5, 2),
+        name = _ref6[0],
+        submenu = _ref6[1];
+
+    Object.entries(submenu).map(function (_ref7) {
+      var _ref8 = _slicedToArray(_ref7, 2),
+          subname = _ref8[0],
+          item = _ref8[1];
+
+      if (subname === nameSelected) {
+        component = item.component;
+      }
+    });
+  });
+  return component;
+};
+
 var SofMenu = function SofMenu() {
   var _useState = useState(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -88,10 +108,10 @@ var SofMenu = function SofMenu() {
       openKeys = _useState4[0],
       setOpenKeys = _useState4[1];
 
-  var _useState5 = useState(Todo1),
+  var _useState5 = useState("ContProfile"),
       _useState6 = _slicedToArray(_useState5, 2),
-      component = _useState6[0],
-      setComponent = _useState6[1];
+      compName = _useState6[0],
+      setCompName = _useState6[1];
 
   var minHeight = useRecoilValue(heightState);
   var setMinHeight = useSetRecoilState(heightState);
@@ -111,22 +131,8 @@ var SofMenu = function SofMenu() {
     }
   };
 
-  var handleMenuItemClick = function handleMenuItemClick(selectedStatName) {
-    Object.entries(menu).map(function (_ref5) {
-      var _ref6 = _slicedToArray(_ref5, 2),
-          name = _ref6[0],
-          submenu = _ref6[1];
-
-      return Object.entries(submenu).map(function (_ref7) {
-        var _ref8 = _slicedToArray(_ref7, 2),
-            subname = _ref8[0],
-            item = _ref8[1];
-
-        if (subname === selectedStatName) {
-          setComponent(item.component);
-        }
-      });
-    });
+  var handleMenuItemClick = function handleMenuItemClick(name) {
+    return setCompName(name);
   };
 
   window.onresize = function () {
@@ -135,6 +141,8 @@ var SofMenu = function SofMenu() {
 
   var mv = menu.MarketVolume;
   var dl = menu.DarkLiquidity;
+
+  var component = getComponent(compName);
 
   return React.createElement(
     Layout,
@@ -151,6 +159,11 @@ var SofMenu = function SofMenu() {
     React.createElement(
       Sider,
       { collapsible: true, collapsed: collapsed, onCollapse: onCollapse, reverseArrow: true },
+      React.createElement(
+        Header,
+        null,
+        'Table of Contents'
+      ),
       React.createElement(
         Menu,
         { theme: 'dark', defaultSelectedKeys: ['1'], mode: 'inline', openKeys: openKeys, onOpenChange: onOpenChange },

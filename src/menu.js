@@ -15,8 +15,8 @@ const Todo4 = <div>Todo 4</div>;
 
 const menu = {
   MarketVolume: {
-    MarketShare: { title: "Open and Close", component: <OpenContCloseVolDist /> },
-    NYSETapeC: { title: "NYSE Tape C", component: Todo2 },
+    OpenAndClose: { title: "Open and Close", component: <OpenContCloseVolDist /> },
+    ContProfile: { title: "Continous Profile", component: <ContinuousVolProfile /> },
     NYSENational: { title: "NYSE National", component: Todo3 },
     MarketVolume: { title: "Market Volume", component: Todo4 },
     OddLot: { title: "Odd-Lot Volume", component: Todo1 },
@@ -36,10 +36,22 @@ Object.entries(menu).forEach(([name, submenu]) => {
   });
 });
 
+const getComponent = nameSelected => {
+  let component = null;
+  Object.entries(menu).map(([name, submenu]) => {
+    Object.entries(submenu).map(([subname, item]) => {
+      if (subname === nameSelected) {
+        component = item.component;
+      }
+    });
+  });
+  return component;
+};
+
 const SofMenu = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [openKeys, setOpenKeys] = useState(['sub1']);
-    const [component, setComponent] = useState(Todo1);
+    const [compName, setCompName] = useState("ContProfile");
     const minHeight = useRecoilValue(heightState);
     const setMinHeight = useSetRecoilState(heightState);
 
@@ -56,15 +68,7 @@ const SofMenu = () => {
       }
     };
 
-    const handleMenuItemClick = selectedStatName => {
-      Object.entries(menu).map(([name, submenu]) => {
-        return Object.entries(submenu).map(([subname, item]) => {
-          if (subname === selectedStatName) {
-            setComponent(item.component);
-          }
-        });
-      });
-    }
+    const handleMenuItemClick = name => setCompName(name);
 
     window.onresize = () => {
       setMinHeight(window.innerHeight - globalHeightOffset);
@@ -72,6 +76,8 @@ const SofMenu = () => {
 
     const mv = menu.MarketVolume;
     const dl = menu.DarkLiquidity;
+
+    const component = getComponent(compName);
 
     return (
       <Layout style={{ minHeight }}>
@@ -81,6 +87,7 @@ const SofMenu = () => {
           </div>
         </Content>
         <Sider collapsible collapsed={collapsed} onCollapse={onCollapse} reverseArrow>
+          <Header>Table of Contents</Header>
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" openKeys={openKeys} onOpenChange={onOpenChange}>
             <SubMenu key="sub1" icon={<UserOutlined />} title="Volume Stats">
               {Object.entries(mv).map(([name, item]) => (
