@@ -15,7 +15,7 @@ const Todo4 = <div>Todo 4</div>;
 
 const menu = {
   MarketVolume: {
-    MarketShare: { title: "Market Share", component: <OpenContCloseVolDist /> },
+    MarketShare: { title: "Open and Close", component: <OpenContCloseVolDist /> },
     NYSETapeC: { title: "NYSE Tape C", component: Todo2 },
     NYSENational: { title: "NYSE National", component: Todo3 },
     MarketVolume: { title: "Market Volume", component: Todo4 },

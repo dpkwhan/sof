@@ -47,8 +47,6 @@ var useECharts = function useECharts(chartRef, options, height) {
       return chart && chart.dispose();
     };
   }, []);
-
-  return;
 };
 
 var colorSpan = function colorSpan(color) {

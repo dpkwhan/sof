@@ -48,7 +48,7 @@ var Todo4 = React.createElement(
 
 var menu = {
   MarketVolume: {
-    MarketShare: { title: "Market Share", component: React.createElement(OpenContCloseVolDist, null) },
+    MarketShare: { title: "Open and Close", component: React.createElement(OpenContCloseVolDist, null) },
     NYSETapeC: { title: "NYSE Tape C", component: Todo2 },
     NYSENational: { title: "NYSE National", component: Todo3 },
     MarketVolume: { title: "Market Volume", component: Todo4 },

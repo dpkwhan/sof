@@ -19,25 +19,23 @@ const useECharts = (chartRef, options, height) => {
   let chart = null;
  
   const renderChart = () => {
-    const renderedInstance = echarts.getInstanceByDom(chartRef.current)
+    const renderedInstance = echarts.getInstanceByDom(chartRef.current);
     if (renderedInstance) {
-      chart = renderedInstance
+      chart = renderedInstance;
     } else {
-      chart = echarts.init(chartRef.current)
+      chart = echarts.init(chartRef.current);
     }
     chart.setOption(options);
     chart.resize();
   };
   
   useEffect(() => {
-    renderChart()
+    renderChart();
   }, [options, height]);
  
   useEffect(() => {
     return () => chart && chart.dispose();
   }, []);
-
-  return;
 }
 
 const colorSpan = color => {
