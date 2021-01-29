@@ -6,7 +6,7 @@ const { SubMenu } = Menu;
 
 const { MenuOutlined, AppstoreOutlined, BarChartOutlined, AreaChartOutlined, PieChartOutlined, DesktopOutlined, UserOutlined, TeamOutlined, FileOutlined } = icons;
 
-const rootSubmenuKeys = ['sub1', 'sub2'];
+const rootSubmenuKeys = ['sub1', 'sub2', 'sub3'];
 
 const Todo1 = <div>Todo 1</div>;
 const Todo2 = <div>Todo 2</div>;
@@ -22,6 +22,11 @@ const menu = {
     OddLot: { title: "Odd-Lot Volume", component: Todo1 },
   },
   DarkLiquidity: {
+    ATSVolume: { title: "ATS Volume", component: Todo2 },
+    NonATSVolume: {title: "Non-ATS Volume", component: Todo3 },
+    BlockVolume: { title: "Block Volume", component: Todo4 },
+  },
+  PerformanceCenter: {
     ATSVolume: { title: "ATS Volume", component: Todo2 },
     NonATSVolume: {title: "Non-ATS Volume", component: Todo3 },
     BlockVolume: { title: "Block Volume", component: Todo4 },
@@ -76,6 +81,7 @@ const SofMenu = () => {
 
     const mv = menu.MarketVolume;
     const dl = menu.DarkLiquidity;
+    const pc = menu.PerformanceCenter;
 
     const component = getComponent(compName);
 
@@ -98,6 +104,13 @@ const SofMenu = () => {
             </SubMenu>
             <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
               {Object.entries(dl).map(([name, item]) => (
+                  <Menu.Item key={item.key} onClick={() => handleMenuItemClick(name)}>
+                    <span>{item.title}</span>
+                  </Menu.Item>
+                ))}
+            </SubMenu>
+            <SubMenu key="sub3" icon={<TeamOutlined />} title="Performance">
+              {Object.entries(pc).map(([name, item]) => (
                   <Menu.Item key={item.key} onClick={() => handleMenuItemClick(name)}>
                     <span>{item.title}</span>
                   </Menu.Item>

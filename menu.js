@@ -23,7 +23,7 @@ var _icons = icons,
     FileOutlined = _icons.FileOutlined;
 
 
-var rootSubmenuKeys = ['sub1', 'sub2'];
+var rootSubmenuKeys = ['sub1', 'sub2', 'sub3'];
 
 var Todo1 = React.createElement(
   'div',
@@ -55,6 +55,11 @@ var menu = {
     OddLot: { title: "Odd-Lot Volume", component: Todo1 }
   },
   DarkLiquidity: {
+    ATSVolume: { title: "ATS Volume", component: Todo2 },
+    NonATSVolume: { title: "Non-ATS Volume", component: Todo3 },
+    BlockVolume: { title: "Block Volume", component: Todo4 }
+  },
+  PerformanceCenter: {
     ATSVolume: { title: "ATS Volume", component: Todo2 },
     NonATSVolume: { title: "Non-ATS Volume", component: Todo3 },
     BlockVolume: { title: "Block Volume", component: Todo4 }
@@ -141,6 +146,7 @@ var SofMenu = function SofMenu() {
 
   var mv = menu.MarketVolume;
   var dl = menu.DarkLiquidity;
+  var pc = menu.PerformanceCenter;
 
   var component = getComponent(compName);
 
@@ -195,6 +201,27 @@ var SofMenu = function SofMenu() {
             var _ref12 = _slicedToArray(_ref11, 2),
                 name = _ref12[0],
                 item = _ref12[1];
+
+            return React.createElement(
+              Menu.Item,
+              { key: item.key, onClick: function onClick() {
+                  return handleMenuItemClick(name);
+                } },
+              React.createElement(
+                'span',
+                null,
+                item.title
+              )
+            );
+          })
+        ),
+        React.createElement(
+          SubMenu,
+          { key: 'sub3', icon: React.createElement(TeamOutlined, null), title: 'Performance' },
+          Object.entries(pc).map(function (_ref13) {
+            var _ref14 = _slicedToArray(_ref13, 2),
+                name = _ref14[0],
+                item = _ref14[1];
 
             return React.createElement(
               Menu.Item,
